@@ -1,0 +1,131 @@
+/* 1. Variáveis para manter consistência e facilitar mudanças */
+:root {
+    --primary-color: #0056b3;     /* Azul corporativo */
+    --primary-hover: #004494;     /* Azul mais escuro para hover */
+    --background-bg: #f4f6f8;     /* Cinza bem claro para o fundo */
+    --container-bg: #ffffff;      /* Branco para o cartão */
+    --text-color: #333333;        /* Cinza escuro para texto */
+    --border-color: #cbd5e0;      /* Cinza para bordas de inputs */
+    --focus-ring: rgba(0, 86, 179, 0.25); /* Anel de foco acessível */
+    --border-radius: 8px;
+    --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 2. Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 3. Estilização do Corpo (Centralizando tudo) */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-bg);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa toda a altura da tela */
+    padding: 20px;
+}
+
+/* 4. O Cartão do Formulário */
+.container {
+    background-color: var(--container-bg);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px; /* Largura máxima para não ficar esticado */
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra suave e moderna */
+}
+
+/* Título */
+.container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* 5. Agrupamento dos Campos */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* 6. Inputs e Selects */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px; /* Bordas levemente arredondadas nos inputs */
+    transition: all 0.2s ease-in-out;
+    appearance: none; /* Remove estilo padrão do navegador no select */
+    -webkit-appearance: none;
+}
+
+/* Adiciona uma seta customizada no Select (opcional, melhora a estética) */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Estados de Foco (Acessibilidade) */
+input:focus,
+select:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem var(--focus-ring);
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #a0aec0;
+    opacity: 1;
+}
+
+/* 7. Botão de Envio */
+button[type="submit"] {
+    display: inline-block;
+    width: 100%;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 0.75rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s;
+    margin-top: 1rem;
+}
+
+/* Hover e Active do Botão */
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+}
+
+button[type="submit"]:active {
+    transform: translateY(1px); /* Efeito de clique sutil */
+}

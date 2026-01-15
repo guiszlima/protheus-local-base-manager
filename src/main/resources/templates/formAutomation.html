@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Configuração de Base Protheus</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Criar Nova Base Protheus</h2>
+
+        <form th:action="@{/processar-base}" th:object="${configuracao}" method="post">
+
+            <div class="form-group">
+                <label for="baseName">Nome da Base:</label>
+                <input type="text" id="baseName" th:field="*{baseName}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="versionProtheus">Versão do Protheus:</label>
+                <select id="versionProtheus" th:field="*{versionProtheus}" required>
+                    <option value="" disabled selected>Selecione a versão...</option>
+                    <option value="24.10">Versão 24.10</option>
+                    <option value="25.10">Versão 25.10</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="databaseType">Banco de Dados:</label>
+                <select id="databaseType" th:field="*{databaseType}" required>
+                    <option value="" disabled selected>Selecione o banco...</option>
+                    <option value="MSSQL">Microsoft SQL Server (MSSQL)</option>
+                    <option value="POSTGRES">PostgreSQL</option>
+                    <option value="ORACLE">Oracle Database</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="serverPort">Porta do Servidor:</label>
+                <input type="number" id="serverPort" th:field="*{serverPort}" placeholder="Ex: 1234" required />
+            </div>
+
+            <button type="submit">Gerar Base</button>
+        </form>
+    </div>
+
+</body>
+</html>

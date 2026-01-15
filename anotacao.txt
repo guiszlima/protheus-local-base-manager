@@ -1,0 +1,1 @@
+colocar todos arquivos externos em um arquivo isolado para ser artefato(os arquivos em resource )
