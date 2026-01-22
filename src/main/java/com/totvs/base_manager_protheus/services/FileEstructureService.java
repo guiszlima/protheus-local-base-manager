@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.totvs.base_manager_protheus.model.ConfigureBaseModel;
 import com.totvs.base_manager_protheus.utills.RecursiveExtractor;
+import com.totvs.base_manager_protheus.utills.PathResolver;
 
 @Getter
 public class FileEstructureService {
@@ -23,7 +24,7 @@ public class FileEstructureService {
     // Constantes
     private static final String ROOT_PATH = "C:\\totvs_protheus_manager\\automacao\\configs";
     private static final List<String> STANDARD_FOLDERS = Arrays.asList("dbaccess", "protheus", "protheus_data");
-    private static final String EXTERNAL_RESOURCES_PATH = "../external-resources.zip";
+    private static final String EXTERNAL_RESOURCES_PATH = PathResolver.getExternalResourcesPath();
     private final String baseName;
     private final Path basePath;
     private final ConfigureBaseModel BaseData;
@@ -58,6 +59,7 @@ public class FileEstructureService {
             this.createProtheusStructure(this.BaseData.getVersionProtheus());
             this.createDbAccessStructure();
             this.createProtheusDataStructure(this.BaseData.getVersionProtheus());
+            this.createODBCDriversStructure(this.BaseData.getDatabaseType());
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -176,20 +178,20 @@ public class FileEstructureService {
         }
     }
 
-    public boolean createODBCDriversStructure(String databaseName) {
+    public boolean createODBCDriversStructure(String databaseType) {
         try {
             // Caminho raiz para drivers ODBC
-            Path odbcDriversRoot = Paths.get("C:\\totvs_protheus_manager\\automacao\\odbc_drivers");
+            Path odbcDriversRoot = Paths.get("C:\\totvs_protheus_manager\\automacao");
 
             // Cria a pasta drivers_odbc caso não exista
-            Path driversOdbcPath = odbcDriversRoot.resolve("drivers_odbc");
+            Path driversOdbcPath = odbcDriversRoot.resolve("odbc_drivers");
             if (Files.notExists(driversOdbcPath)) {
                 Files.createDirectories(driversOdbcPath);
                 System.out.println("Pasta drivers_odbc criada: " + driversOdbcPath);
             }
 
             // Switch case para verificar tipo de banco de dados
-            switch (databaseName) {
+            switch (databaseType) {
                 case "MSSQL":
                     // Cria a subpasta MSSQL dentro de drivers_odbc
                     Path mssqlPath = driversOdbcPath.resolve("MSSQL");
@@ -197,9 +199,9 @@ public class FileEstructureService {
                         Files.createDirectories(mssqlPath);
                         System.out.println("Pasta MSSQL criada: " + mssqlPath);
                     }
-                    String mssqlDriversText = "external-resources\\odbc_drivers\\MSSQL\\SQL2022-SSEI-Dev.exe";
+                    String mssqlDriversText = "external-resources\\odbc_drivers\\MSSQL\\msodbcsql.msi";
                     String mssqlTargetPath = mssqlPath.toString();
-                    RecursiveExtractor.RecursiveFolderExtractor(EXTERNAL_RESOURCES_PATH, mssqlDriversText,
+                    RecursiveExtractor.RecursiveFileExtractor(EXTERNAL_RESOURCES_PATH, mssqlDriversText,
                             mssqlTargetPath);
                     System.out.println("Drivers MSSQL copiados para: " + mssqlTargetPath);
                     break;
@@ -213,7 +215,7 @@ public class FileEstructureService {
                     }
                     String postgresDriversText = "external-resources\\odbc_drivers\\POSTGRES\\psqlodbc-setup.exe";
                     String postgresTargetPath = postgresPath.toString();
-                    RecursiveExtractor.RecursiveFolderExtractor(EXTERNAL_RESOURCES_PATH, postgresDriversText,
+                    RecursiveExtractor.RecursiveFileExtractor(EXTERNAL_RESOURCES_PATH, postgresDriversText,
                             postgresTargetPath);
                     System.out.println("Drivers POSTGRES copiados para: " + postgresTargetPath);
                     break;
@@ -223,7 +225,7 @@ public class FileEstructureService {
                     break;
 
                 default:
-                    System.out.println("Banco de dados não reconhecido: " + databaseName);
+                    System.out.println("Banco de dados não reconhecido: " + databaseType);
             }
 
             return true;

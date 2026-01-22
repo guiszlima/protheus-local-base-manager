@@ -73,7 +73,20 @@ public class RecursiveExtractor {
 
         URI uri = URI.create("jar:" + zipPath.toUri());
 
-        try (FileSystem zipFs = FileSystems.newFileSystem(uri, env)) {
+        FileSystem zipFs = null;
+        boolean shouldCloseFileSystem = false;
+
+        try {
+            // Tenta montar o ZIP, mas captura se já estiver montado
+            try {
+                zipFs = FileSystems.newFileSystem(uri, env);
+                shouldCloseFileSystem = true; // Só fecha se CRIAMOS este FileSystem
+            } catch (FileSystemAlreadyExistsException e) {
+                // Se já estiver montado, usa o existente mas NÃO fecha
+                zipFs = FileSystems.getFileSystem(uri);
+                shouldCloseFileSystem = false;
+            }
+
             Path arquivoOrigem = zipFs.getPath(arquivoNoZip);
 
             if (Files.notExists(arquivoOrigem)) {
@@ -83,9 +96,24 @@ public class RecursiveExtractor {
                 throw new IOException("O caminho não é um arquivo: " + arquivoNoZip);
             }
 
+            // Assegura que o diretório de destino existe
+            if (Files.notExists(targetRoot)) {
+                Files.createDirectories(targetRoot);
+            }
+
             // Copia o arquivo diretamente
             Path caminhoFinal = targetRoot.resolve(Paths.get(arquivoNoZip).getFileName());
             Files.copy(arquivoOrigem, caminhoFinal, StandardCopyOption.REPLACE_EXISTING);
+
+        } finally {
+            // Fecha o FileSystem APENAS se foi criado por este método
+            if (zipFs != null && zipFs.isOpen() && shouldCloseFileSystem) {
+                try {
+                    zipFs.close();
+                } catch (IOException e) {
+                    System.err.println("Aviso: Erro ao fechar FileSystem: " + e.getMessage());
+                }
+            }
         }
     }
 }

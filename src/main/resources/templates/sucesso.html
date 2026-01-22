@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automação - Sucesso</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        .checkmark::after {
+            content: "✓";
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .message {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+            border-radius: 5px;
+        }
+        
+        .message p {
+            color: #333;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="checkmark"></div>
+        
+        <h1>Sucesso!</h1>
+        <p class="subtitle">A base Protheus foi criada com sucesso</p>
+        
+        <div class="message">
+            <p><strong>✓ Diretório de configuração criado</strong></p>
+            <p><strong>✓ Driver ODBC verificado/instalado</strong></p>
+            <p><strong>✓ DSN do sistema configurado</strong></p>
+            <p>A automação foi concluída com sucesso! Sua base está pronta para uso.</p>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.location.href='/automacao'">Criar Nova Base</button>
+            <button class="btn btn-secondary" onclick="window.history.back()">Voltar</button>
+        </div>
+    </div>
+</body>
+</html>
