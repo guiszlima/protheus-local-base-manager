@@ -37,6 +37,7 @@ public class DriverInstallerService {
                 return true;
             case "POSTGRES":
                 System.out.println("Iniciando a instalação do driver ODBC para PostgreSQL...");
+
                 ProgramExecutor.executeProcess(driverPath, SILENT_INSTALL_ARGS_EXE);
                 System.out.println("Driver ODBC para PostgreSQL instalado com sucesso.");
                 return true;

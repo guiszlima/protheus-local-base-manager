@@ -85,6 +85,7 @@ public class RecursiveExtractor {
                 // Se já estiver montado, usa o existente mas NÃO fecha
                 zipFs = FileSystems.getFileSystem(uri);
                 shouldCloseFileSystem = false;
+                System.out.println("FileSystem já montado, usando o existente para acessar o arquivo.");
             }
 
             Path arquivoOrigem = zipFs.getPath(arquivoNoZip);

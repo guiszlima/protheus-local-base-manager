@@ -16,7 +16,6 @@ import java.util.List;
 
 import com.totvs.base_manager_protheus.model.ConfigureBaseModel;
 import com.totvs.base_manager_protheus.utills.RecursiveExtractor;
-import com.totvs.base_manager_protheus.utills.PathResolver;
 
 @Getter
 public class FileEstructureService {
@@ -24,7 +23,7 @@ public class FileEstructureService {
     // Constantes
     private static final String ROOT_PATH = "C:\\totvs_protheus_manager\\automacao\\configs";
     private static final List<String> STANDARD_FOLDERS = Arrays.asList("dbaccess", "protheus", "protheus_data");
-    private static final String EXTERNAL_RESOURCES_PATH = PathResolver.getExternalResourcesPath();
+    private static final String EXTERNAL_RESOURCES_PATH = "C:\\base_manager\\external-resources.zip";
     private final String baseName;
     private final Path basePath;
     private final ConfigureBaseModel BaseData;
@@ -113,6 +112,7 @@ public class FileEstructureService {
             return true;
         } catch (IOException e) { // | URISyntaxException se usar a Opção B
             e.printStackTrace();
+            System.out.println("ERRO ao criar estrutura do Protheus: " + e.getMessage());
             return false;
         }
     }

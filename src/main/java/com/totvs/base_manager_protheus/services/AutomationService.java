@@ -18,5 +18,8 @@ public class AutomationService {
         DriverInstallerService.installDriver(configuracao.getDatabaseType());
 
         ODBCConfigurationService.configureSystemDSN(configuracao);
+
+        DatabaseInstallerService databaseService = new DatabaseInstallerService();
+        databaseService.installDatabase(configuracao.getDatabaseType());
     }
 }
