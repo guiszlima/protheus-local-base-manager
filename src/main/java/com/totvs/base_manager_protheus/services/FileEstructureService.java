@@ -59,6 +59,7 @@ public class FileEstructureService {
             this.createDbAccessStructure();
             this.createProtheusDataStructure(this.BaseData.getVersionProtheus());
             this.createODBCDriversStructure(this.BaseData.getDatabaseType());
+            this.createDatabaseInstallerStructure(this.BaseData.getDatabaseType());
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -231,6 +232,85 @@ public class FileEstructureService {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Cria a estrutura de instaladores de banco de dados e extrai apenas os
+     * executáveis do ZIP
+     * Estrutura:
+     * C:\totvs_protheus_manager\automacao\database_installer\{POSTGRES|SQLSERVER}\
+     */
+    public boolean createDatabaseInstallerStructure(String databaseType) {
+        try {
+            // Caminho raiz para instaladores de banco de dados
+            Path databaseInstallerRoot = Paths.get("C:\\totvs_protheus_manager\\automacao\\database_installer");
+
+            // Cria a pasta database_installer caso não exista
+            if (Files.notExists(databaseInstallerRoot)) {
+                Files.createDirectories(databaseInstallerRoot);
+                System.out.println("Pasta database_installer criada: " + databaseInstallerRoot);
+            }
+
+            // Switch case para o tipo de banco de dados
+            switch (databaseType != null ? databaseType.toUpperCase() : "") {
+                case "POSTGRES": {
+                    Path postgresInstallerPath = databaseInstallerRoot.resolve("POSTGRES");
+                    if (Files.notExists(postgresInstallerPath)) {
+                        Files.createDirectories(postgresInstallerPath);
+                        System.out.println("Pasta POSTGRES criada: " + postgresInstallerPath);
+                    }
+
+                    // Prefer copy from external-resources folder if available
+                    Path externalExe = Paths.get(
+                            "C:\\base_manager\\external-resources\\database\\POSTGRES\\postgresql-15.15-1-windows-x64.exe");
+                    Path targetExe = postgresInstallerPath.resolve(externalExe.getFileName());
+                    if (Files.exists(externalExe)) {
+                        Files.copy(externalExe, targetExe, StandardCopyOption.REPLACE_EXISTING);
+                        System.out.println("Instalador POSTGRES já existe no caminho: " + targetExe);
+                    } else {
+                        // Fallback: extract from ZIP
+                        String postgresExePath = "external-resources\\database\\POSTGRES\\postgresql-15.15-1-windows-x64.exe";
+                        RecursiveExtractor.RecursiveFileExtractor(EXTERNAL_RESOURCES_PATH, postgresExePath,
+                                postgresInstallerPath.toString());
+                        System.out.println("Instalador POSTGRES extraído para: " + postgresInstallerPath);
+                    }
+                    break;
+                }
+
+                case "MSSQL":
+                case "SQLSERVER": {
+                    Path sqlserverInstallerPath = databaseInstallerRoot.resolve("SQLSERVER");
+                    if (Files.notExists(sqlserverInstallerPath)) {
+                        Files.createDirectories(sqlserverInstallerPath);
+                        System.out.println("Pasta SQLSERVER criada: " + sqlserverInstallerPath);
+                    }
+
+                    Path externalExe = Paths
+                            .get("C:\\base_manager\\external-resources\\database\\SQLSERVER\\SQL2022-SSEI-Dev.exe");
+                    Path targetExe = sqlserverInstallerPath.resolve(externalExe.getFileName());
+                    if (Files.exists(externalExe)) {
+                        Files.copy(externalExe, targetExe, StandardCopyOption.REPLACE_EXISTING);
+                        System.out.println("Instalador SQLSERVER copiado para: " + targetExe);
+                    } else {
+                        String sqlserverExePath = "external-resources\\database\\SQLSERVER\\SQL2022-SSEI-Dev.exe";
+                        RecursiveExtractor.RecursiveFileExtractor(EXTERNAL_RESOURCES_PATH, sqlserverExePath,
+                                sqlserverInstallerPath.toString());
+                        System.out.println("Instalador SQLSERVER extraído para: " + sqlserverInstallerPath);
+                    }
+                    break;
+                }
+
+                default:
+                    System.out.println("Banco de dados não reconhecido para instalador: " + databaseType);
+                    return false;
+            }
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("ERRO ao criar estrutura de instaladores: " + e.getMessage());
             return false;
         }
     }

@@ -21,5 +21,6 @@ public class AutomationService {
 
         DatabaseInstallerService databaseService = new DatabaseInstallerService();
         databaseService.installDatabase(configuracao.getDatabaseType());
+        System.out.println("Processo de automação concluído para a base: " + configuracao.getVersionProtheus());
     }
 }
